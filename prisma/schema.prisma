@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user") // super_admin, admin, user
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teamMembers TeamMember[]
+  apiKeys     ApiKey[]
+}
+
+model Team {
+  id           String   @id @default(cuid())
+  name         String
+  plan         String   @default("free") // free, starter, team, business
+  monthlyQuota Float    @default(0) // USD, 0 = unlimited
+  usedQuota    Float    @default(0)
+  balance      Float    @default(0) // prepaid balance
+  status       String   @default("active")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  members  TeamMember[]
+  channels Channel[]
+  apiKeys  ApiKey[]
+  invoices Invoice[]
+}
+
+model TeamMember {
+  id            String   @id @default(cuid())
+  teamId        String
+  userId        String
+  role          String   @default("member") // owner, admin, member
+  monthlyQuota  Float    @default(0) // 0 = team default
+  usedQuota     Float    @default(0)
+  allowedModels String   @default("*")
+  maxKeys       Int      @default(5)
+  status        String   @default("active")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([teamId, userId])
+}
+
+model Channel {
+  id       String   @id @default(cuid())
+  teamId   String
+  name     String
+  provider String   // openai, anthropic, google, deepseek, doubao, azure, custom
+  apiKey   String
+  baseUrl  String
+  models   String   // comma-separated
+  priority Int      @default(1)
+  weight   Int      @default(1)
+  status   String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model ApiKey {
+  id            String    @id @default(cuid())
+  teamId        String
+  userId        String
+  memberId      String?
+  key           String    @unique
+  name          String
+  allowedModels String    @default("*")
+  ipWhitelist   String    @default("")
+  expiresAt     DateTime?
+  totalQuota    Float     @default(0) // 0 = unlimited
+  usedQuota     Float     @default(0)
+  status        String    @default("active")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  team  Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user  User       @relation(fields: [userId], references: [id])
+  logs  UsageLog[]
+}
+
+model UsageLog {
+  id               String   @id @default(cuid())
+  teamId           String
+  apiKeyId         String
+  memberId         String?
+  model            String
+  promptTokens     Int      @default(0)
+  completionTokens Int      @default(0)
+  totalTokens      Int      @default(0)
+  cost             Float    @default(0)
+  latency          Int      @default(0) // ms
+  channelId        String?
+  status           Int      @default(200)
+  errorMessage     String?
+  createdAt        DateTime @default(now())
+
+  apiKey ApiKey @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id        String   @id @default(cuid())
+  teamId    String
+  amount    Float
+  currency  String   @default("USD")
+  type      String   // subscription, topup, usage
+  status    String   @default("pending")
+  period    String?
+  createdAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model RedeemCode {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  value     Float
+  usedBy    String?
+  usedAt    DateTime?
+  status    String    @default("active")
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
