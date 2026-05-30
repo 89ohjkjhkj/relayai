@@ -48,7 +48,7 @@ Your App → sk-relay-xxx → RelayAI → OpenAI / Claude / DeepSeek / Gemini / 
 
 ```bash
 # Clone & install
-git clone https://github.com/YOUR_USERNAME/relay-ai.git
+git clone https://github.com/89ohjkjhkj/relayai.git
 cd relay-ai
 npm install
 

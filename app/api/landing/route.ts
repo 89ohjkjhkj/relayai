@@ -517,7 +517,7 @@ export async function GET() {
     <div class="nav-links">
       <a href="#features" class="desktop-only">Features</a>
       <a href="#pricing" class="desktop-only">Pricing</a>
-      <a href="https://github.com/YOUR_USERNAME/relay-ai" class="desktop-only" target="_blank">GitHub</a>
+      <a href="https://github.com/89ohjkjhkj/relayai" class="desktop-only" target="_blank">GitHub</a>
       <a href="/login" class="btn btn-ghost">Login</a>
       <a href="/register" class="btn btn-primary">Get Started Free</a>
     </div>
@@ -541,7 +541,7 @@ export async function GET() {
     </p>
     <div class="hero-buttons">
       <a href="/register" class="btn btn-primary btn-lg">Start for Free →</a>
-      <a href="https://github.com/YOUR_USERNAME/relay-ai" class="btn btn-outline btn-lg" target="_blank">
+      <a href="https://github.com/89ohjkjhkj/relayai" class="btn btn-outline btn-lg" target="_blank">
         ⭐ Star on GitHub
       </a>
     </div>
@@ -766,7 +766,7 @@ response = client.chat.completions.<span class="method">create</span>(
     <p>RelayAI gives your team control, visibility, and savings — in 5 minutes.</p>
     <div class="hero-buttons">
       <a href="/register" class="btn btn-primary btn-lg">Start for Free →</a>
-      <a href="https://github.com/YOUR_USERNAME/relay-ai" class="btn btn-outline btn-lg" target="_blank">
+      <a href="https://github.com/89ohjkjhkj/relayai" class="btn btn-outline btn-lg" target="_blank">
         View on GitHub
       </a>
     </div>
@@ -776,7 +776,7 @@ response = client.chat.completions.<span class="method">create</span>(
 <!-- FOOTER -->
 <footer>
   <div class="container">
-    <p>© 2026 RelayAI · Open-source under MIT License · <a href="https://github.com/YOUR_USERNAME/relay-ai">GitHub</a></p>
+    <p>© 2026 RelayAI · Open-source under MIT License · <a href="https://github.com/89ohjkjhkj/relayai">GitHub</a></p>
   </div>
 </footer>
 
